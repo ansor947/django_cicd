@@ -1,6 +1,6 @@
 name: Авторазмещиние и авторазворот проекта
 
-on:
+workflow on:
   push:
     branches: [ci]
 
