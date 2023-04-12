@@ -27,10 +27,10 @@ jobs:
         ports:
           - 5432:5432
         options:
-          -- health-cmd pg_isready
-          -- health-interval pg_isready 7s
-          -- health-timeout 7s
-          -- health-retries 7
+          --health-cmd pg_isready
+          --health-interval pg_isready 7s
+          --health-timeout 7s
+          --health-retries 7
     steps:
       - name: Проверка обновлений
         uses: actions/checkout@v3
