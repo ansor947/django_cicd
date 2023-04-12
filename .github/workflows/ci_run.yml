@@ -50,5 +50,4 @@ jobs:
 
       # - name: Деплой
       #   uses: python manage.py test
-          
-            
+      
