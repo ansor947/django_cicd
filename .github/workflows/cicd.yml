@@ -1,0 +1,54 @@
+name: Авторазмещиние и авторазворот проекта
+
+on:
+  push:
+    branches: [ci]
+
+    jobs:
+      tests:
+        runs-on: ubuntu-20.04
+        env:
+          DEBAG: "0"
+          POSTGRESS_USER: ${{ secrets.POSTGRESS_USER }}
+          POSTGRESS_PASS: ${{ secrets.POSTGRESS_PASS }}
+          POSTGRESS_DB: ${{ secrets.POSTGRESS_DB }}
+          POSTGRESS_KEY: ${{ secrets.POSTGRESS_KEY }}
+          POSTGRESS_HOST: ${{ secrets.POSTGRESS_HOST }}
+          POSTGRESS_PORT: ${{ secrets.POSTGRESS_PORT }}
+          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        services:
+          postgres_main:
+            image: postgres:12
+            env:
+              POSTGRESS_USER: ${{ env.POSTGRESS_USER }}
+              POSTGRESS_DB: ${{ env.POSTGRESS_DB }}
+              POSTGRESS_PASSWORD: ${{ env.POSTGRESS_PASS }}
+            ports:
+              - 5432:5432
+            options:
+              -- health-cmd pg_isready
+              -- health-interval pg_isready 7s
+              -- health-timeout 7s
+              -- health-retries 7
+        steps:
+          - name: Проверка обновлений
+            uses: actions/checkout@v3
+
+          - name: Установка python
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.9
+
+          - name: Обновление установленных библиотек
+            run: pip install -r requirements.txt
+
+          - name: Линтинг
+            run: flake8 logistic --exclude logistic/migrations
+
+          - name: Тесты
+            uses: python manage.py test
+
+          # - name: Деплой
+          #   uses: python manage.py test
+          
+            
