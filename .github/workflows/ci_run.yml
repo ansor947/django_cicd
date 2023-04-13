@@ -32,7 +32,7 @@ jobs:
           --health-timeout 7s
           --health-retries 7
     steps:
-      - name: Проверка обновлений
+      - name: Проверка на наличие обновлений
         uses: actions/checkout@v3
 
       - name: Установка python
